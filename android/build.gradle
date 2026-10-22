@@ -4,3 +4,27 @@ allprojects {
         mavenCentral()
     }
 }
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+// Shim kompatibilitas untuk plugin lawas (mis. geolocator_android 4.6.x)
+// yang masih membaca flutter.compileSdkVersion / flutter.minSdkVersion.
+subprojects {
+    if (name != "app") {
+        ext.flutter = [
+            compileSdkVersion: 34,
+            minSdkVersion: 21,
+            targetSdkVersion: 34,
+        ]
+    }
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
