@@ -4,5 +4,3 @@ allprojects {
         mavenCentral()
     }
 }
-
-rootProject.name = "hadir"
